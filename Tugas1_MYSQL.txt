@@ -1,6 +1,7 @@
-nama : Diki Sunanda
+Nama : Diki Sunanda
 Grup : 4
 Universitas Kuningan
+Worksheeet 2
 
 **SOAL 2.1**
 1. Menampilkan seluruh data produk berdasarkan harga jual mulai dari yang termahal
