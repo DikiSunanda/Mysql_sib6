@@ -1,0 +1,211 @@
+Nama    : Diki Sunanda
+Group: 4
+Universitas Kuningan
+
+Worksheet 6
+
+Soal 6.1
+
+3. Buat Fungsi kategori_harga dengan parameter yang menerima Inputan argumen tipe
+   data double dan mengembalikan tipe data string kategori harga berdasarkan :
+    * 0 - 500rb : Murah
+    * 500rrb - 30000: sedang 
+    3jt - 10jt : Mahal 
+    > 10 jt : Sangat Mahal
+
+
+CREATE FUNCTION kategori_harga(harga DOUBLE)
+    -> RETURNS VARCHAR(20)
+    -> BEGIN
+    ->     DECLARE kategori VARCHAR(20);
+    ->
+    ->     IF harga <= 500000 THEN
+    ->         SET kategori = 'murah';
+    ->     ELSEIF harga <= 3000000 THEN
+    ->         SET kategori = 'sedang';
+    ->     ELSEIF harga <= 10000000 THEN
+    ->         SET kategori = 'mahal';
+    ->     ELSE
+    ->         SET kategori = 'sangat mahal';
+    ->     END IF;
+    ->
+    ->     RETURN kategori;
+    -> END$$
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [dbpost_sib6]>
+MariaDB [dbpost_sib6]> DELIMITER ;
+MariaDB [dbpost_sib6]> SELECT kategori_harga(400000);
++------------------------+
+| kategori_harga(400000) |
++------------------------+
+| murah                  |
++------------------------+
+1 row in set (0.007 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Soal 6.1
+
+1. Buatlah procedure untuk update harga_jual berdasarkan jenis produk tertentu 
+   (jenis_produk_id), beri nama proceure pro_naikan_harga memiliki parameter yang akan menerima
+   argumen : jenis produk ID dan persentase kenaikan harga.
+
+   DELIMITER $$
+MariaDB [dbpost_sib6]> CREATE PROCEDURE pro_naikan_harga (
+    -> IN jenis_produk INT,
+    -> IN persentasi_kenaikan INT )
+    -> BEGIN
+    -> UPDATE produk SET harga_jual = harga_jual + (harga_jual * persentasi_kenaikan / 100)
+    -> WHERE jenis_produk_id = jenis_produk;
+    -> END $$
+Query OK, 0 rows affected (0.005 sec)
+
+    
+MariaDB [dbpost_sib6]> SELECT kode, nama, harga_jual, jenis_produk_id FROM produk;
++--------+-------------------+------------+-----------------+
+| kode   | nama              | harga_jual | jenis_produk_id |
++--------+-------------------+------------+-----------------+
+| TV01   | Televisi 21 inchs |   52520000 |               1 |
+| TV02   | Televisi 40 inch  |    7737600 |               1 |
+| K001   | Kulkas 2 pintu    |    4867200 |               1 |
+| M001   | Meja Makan        |     600000 |               2 |
+| TK01   | Teh Kotak         |       3850 |               4 |
+| PC01   | PC Desktop HP     |    9984000 |               5 |
+| TB01   | Teh Botol         |       2750 |               4 |
+| AC01   | Notebook Acer S   |   11232000 |               5 |
+| LN01   | Notebook Lenovo   |   12480000 |               5 |
+| L005   | Laptop Lenovo     |   16640000 |               1 |
+| L112   | Kopi              |      33000 |               4 |
+| L113   | Teh Sosro 2       |      15600 |               1 |
+| L0015  | Laptop Asus       |    5200000 |               1 |
+| TV0115 | Televisi 22 inc`  |   52520000 |               1 |
+| TV0116 | Televisi 23 inc   |   52520000 |               1 |
+| TV0117 | Televisi 24 inc   |   52520000 |               1 |
+| TV0118 | Televisi 25 inc   |   52520000 |               1 |
+| TV0120 | Televisi 27 inc   |   52520000 |               1 |
+| TV0121 | Televisi 28 inc   |   52520000 |               1 |
+| TV0122 | Televisi 29 inc   |   52520000 |               1 |
+| THP001 | Teh Pucuk         |       5500 |               4 |
+| THP002 | Teh Pucuk2        |       5500 |               4 |
+| M0001  | Motor NMAX        |          0 |              12 |
+| M0002  | Motor Aerox       |          0 |              12 |
+| M0003  | Motor Jupiter Z   |          0 |              12 |
++--------+-------------------+------------+-----------------+
+25 rows in set (0.001 sec)
+
+MariaDB [dbpost_sib6]> CALL pro_naikan_harga(1,10);
+Query OK, 13 rows affected (0.004 sec)
+
+MariaDB [dbpost_sib6]> SELECT kode, nama, harga_jual, jenis_produk_id FROM produk;
++--------+-------------------+------------+-----------------+
+| kode   | nama              | harga_jual | jenis_produk_id |
++--------+-------------------+------------+-----------------+
+| TV01   | Televisi 21 inchs |   57772000 |               1 |
+| TV02   | Televisi 40 inch  |    8511360 |               1 |
+| K001   | Kulkas 2 pintu    |    5353920 |               1 |
+| M001   | Meja Makan        |     600000 |               2 |
+| TK01   | Teh Kotak         |       3850 |               4 |
+| PC01   | PC Desktop HP     |    9984000 |               5 |
+| TB01   | Teh Botol         |       2750 |               4 |
+| AC01   | Notebook Acer S   |   11232000 |               5 |
+| LN01   | Notebook Lenovo   |   12480000 |               5 |
+| L005   | Laptop Lenovo     |   18304000 |               1 |
+| L112   | Kopi              |      33000 |               4 |
+| L113   | Teh Sosro 2       |      17160 |               1 |
+| L0015  | Laptop Asus       |    5720000 |               1 |
+| TV0115 | Televisi 22 inc`  |   57772000 |               1 |
+| TV0116 | Televisi 23 inc   |   57772000 |               1 |
+| TV0117 | Televisi 24 inc   |   57772000 |               1 |
+| TV0118 | Televisi 25 inc   |   57772000 |               1 |
+| TV0120 | Televisi 27 inc   |   57772000 |               1 |
+| TV0121 | Televisi 28 inc   |   57772000 |               1 |
+| TV0122 | Televisi 29 inc   |   57772000 |               1 |
+| THP001 | Teh Pucuk         |       5500 |               4 |
+| THP002 | Teh Pucuk2        |       5500 |               4 |
+| M0001  | Motor NMAX        |          0 |              12 |
+| M0002  | Motor Aerox       |          0 |              12 |
+| M0003  | Motor Jupiter Z   |          0 |              12 |
++--------+-------------------+------------+-----------------+
+25 rows in set (0.001 sec)
+
+2. Buat fungsi umur dengan parameter yang menerima inputan argumen tipe data date 
+   dan mengembalikan hasil perhitungan umur (tahun sekarang dikurang tahun inputan)
+   dengan tipe data integer
+
+    CREATE FUNCTION umur1(tgl_lahir DATE)
+    -> RETURNS INT
+    -> BEGIN
+    -> DECLARE umur INT;
+    -> SET umur = YEAR(CURDATE()) - YEAR(tgl_lahir);
+    -> RETURN umur;
+    -> END $$
+ERROR 1304 (42000): FUNCTION umur1 already exists
+MariaDB [dbpost_sib6]> DELIMITER ;
+MariaDB [dbpost_sib6]> SELECT nama, umur1(tgl_lahir) AS umur FROM pelanggan;
++--------------------+------+
+| nama               | umur |
++--------------------+------+
+| Agung Sedayu Group |   14 |
+| Pandan Wangi       |   74 |
+| Sekar Mirah        |   41 |
+| Swandaru Geni      |   43 |
+| Pradabashu         |   39 |
+| Gayatri Dwi        |   37 |
+| Dewi Gyat          |   36 |
+| Andre Haru         |   34 |
+| Ahmad Hasan        |   32 |
+| Cassanndra         |   34 |
+| Andi Wijaya        |    1 |
+| Ira                |    1 |
++--------------------+------+
+12 rows in set (0.007 sec)
+
+
+Soal 6.2
+
+1. Buatlah bisnis proses pembayaran dengan menggunakan trigers, dengan skenario sebagai berikut:
+   * Pelanggan memesan didalam table pesanan
+        SELECT * FROM pesanan;
+        Didalam table pembayaran tambahkan kolom status_pembayaran
+
+        ALTER TABLE pembayaran ADD status_pembayaran varchar(25);
+        ERROR 1060 (42S21): Duplicate column name 'status_pembayaran'
+MariaDB [dbpost_sib6]> SELECT * FROM pembayaran;
++----+------------+------------+--------+------+------------+-------------------+
+| id | nokuitansi | tanggal    | jumlah | ke   | pesanan_id | status_pembayaran |
++----+------------+------------+--------+------+------------+-------------------+
+|  1 | MD001      | 0000-00-00 |  30000 |    1 |         11 | Lunas             |
+|  2 | MD002      | 2023-10-10 |  30000 |    2 |         11 | Lunas             |
+|  3 | MD003      | 2023-10-10 |  30000 |    1 |         11 | Lunas             |
+|  4 | MD004      | 2023-10-10 |  15000 |    1 |          2 |                   |
+|  5 | MD005      | 2023-10-10 |  18000 |    2 |          2 | Lunas             |
++----+------------+------------+--------+------+------------+-------------------+
+5 rows in set (0.001 sec)
+
+
+   * Dilanjutkan dengan proses pembayaran di table pembayaran
+
+   * Didalam table pembayaran tambahkan kolom status_pembayaran
+   * Jika pesanan sudah dibayar maka status pemayaran akan menjadi Lunas
+
+
+2. Buatlah stored procedure dengan nama kurangi_stok 
+
